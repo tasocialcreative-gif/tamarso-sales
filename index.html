@@ -271,6 +271,19 @@
     .form-title{font-size:23px;margin-bottom:16px;padding-bottom:10px}
   }
 </style>
+  .checks li{background:rgba(255,222,222,.15)!important;border:1px solid rgba(255,222,222,.38)!important;color:#fff!important;box-shadow:0 6px 18px -10px rgba(0,0,0,.5)}
+  .checks li.hl{background:rgba(255,222,222,.3)!important;border-color:rgba(255,222,222,.7)!important}
+  @media (max-width:640px){.p1 .checks li{align-items:center}.p1 .checks li span:last-child{flex:1}}
+</style>
+  @media (max-width:640px){
+    .p1 .filter{font-size:12.5px;padding:6px 10px}
+    .p1 .filter .e2{display:none}
+    .choices.col .choice,.choices.col .choice span{width:100%;text-align:right}
+    .choices:not(.col) .choice{flex:1}
+    .choices:not(.col) .choice span{width:100%;text-align:center;padding:11px 8px}
+    .field input[type=text],.field input[type=tel],.field textarea{font-size:16px}
+  }
+</style>
 </head>
 <body>
 
@@ -285,9 +298,9 @@
 
     <h1>דרושות<br class="br-d"> <em>נשות מכירות</em></h1>
     <p class="tagline">אנחנו מחפשות נשות מכירות לאקדמיית הסושיאל הגדולה ביותר במדינת ישראל</p>
-    <p class="filter">⚠️ מי שלא באה לעבוד באמת, בבקשה לא להשאיר פרטים ⚠️</p>
+    <p class="filter">⚠️ מי שלא באה לעבוד באמת, בבקשה לא להשאיר פרטים<span class="e2"> ⚠️</span></p>
     <ul class="checks" style="margin:6px auto 26px">
-      <li><span class="tick">✓</span><span><b>בסיס + עמלות</b>, פוטנציאל הכנסה <b>ללא תקרה</b>: 20,000–30,000 ₪ בחודש</span></li>
+      <li><span class="tick">✓</span><span><b>בסיס + עמלות</b>, פוטנציאל הכנסה <b>ללא תקרה</b>: <bdi dir="ltr">20,000–30,000</bdi> ₪ בחודש</span></li>
       <li><span class="tick">✓</span><span><b>משרה מלאה</b>, א׳–ה׳, מהמשרדים שלנו <b>בתל אביב</b></span></li>
       <li class="hl"><span class="tick">🎖</span><span><b>מענק לחיילות משוחררות</b> אחרי חצי שנה בתפקיד</span></li>
       <li><span class="tick">✓</span><span><b>הכשרה מלאה</b>. ניסיון במכירות טלפוניות הוא יתרון, לא חובה</span></li>
