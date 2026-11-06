@@ -209,7 +209,7 @@
 <script>
 /* ===== הגדרות — לעדכן לפני העלאה ===== */
 var CONFIG = {
-  FORM_ENDPOINT: "",          // כתובת שליחת הטופס (למשל Web3Forms). ריק = לא נשלח לשום מקום
+  FORM_ENDPOINT: "",          // כתובת ה-Web App של Google Apps Script (השיטס). ריק = לא נשלח לשום מקום
   NEXT_PAGE_URL: "video.html" // עמוד 2 (הסרטון)
 };
 (function(){
@@ -253,7 +253,7 @@ var CONFIG = {
     try{ if(window.fbq) fbq('track','Lead'); }catch(err){}
     var go = function(){ location.href = CONFIG.NEXT_PAGE_URL + location.search; };
     if(CONFIG.FORM_ENDPOINT){
-      fetch(CONFIG.FORM_ENDPOINT,{method:'POST',body:new FormData(form)}).then(go).catch(go);
+      fetch(CONFIG.FORM_ENDPOINT,{method:'POST',mode:'no-cors',body:new FormData(form)}).then(go).catch(go);
     } else { go(); }
   });
 })();
