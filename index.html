@@ -33,7 +33,7 @@
 
   .perks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:860px;margin:0 auto}
   .perk{background:rgba(255,255,255,.07);border:1px solid rgba(255,222,222,.22);border-radius:16px;padding:16px 12px;text-align:center}
-  .perk .ic{font-size:22px;line-height:1;margin-bottom:8px}
+  .perk b i{font-style:normal;margin-left:6px}
   .perk b{display:block;font-size:17px;font-weight:800;line-height:1.25}
   .perk span{display:block;font-size:13px;color:rgba(255,255,255,.72);margin-top:4px;line-height:1.4}
   .perk.hl{background:var(--pink);border-color:var(--pink);color:var(--b-700)}
@@ -84,20 +84,20 @@
     .perks{grid-template-columns:1fr 1fr;gap:8px}
   }
   @media (max-width:640px){
-    .top{padding:18px 14px 76px}
+    .top{padding:16px 12px 72px}
     .logo{height:30px;margin-bottom:14px}
     .logo-text{margin-bottom:14px}
-    h1{font-size:34px;margin-bottom:8px}
-    .tagline{font-size:15px;margin-bottom:18px}
-    .perk{padding:11px 8px;border-radius:14px}
-    .perk .ic{font-size:18px;margin-bottom:5px}
-    .perk b{font-size:15px}
-    .perk span{font-size:12px}
-    .card{margin:-56px 12px 0;padding:24px 18px 22px;border-radius:20px}
+    h1{font-size:32px;margin-bottom:6px}
+    .tagline{font-size:14.5px;margin-bottom:16px;line-height:1.5}
+    .perk{padding:10px 6px;border-radius:13px}
+    .perk b{font-size:15px;white-space:nowrap}
+    .perk b i{margin-left:4px}
+    .perk span{font-size:11.5px;margin-top:2px}
+    .card{margin:-54px 10px 0;padding:22px 16px 22px;border-radius:20px}
     .card-head{margin-bottom:20px}
     .card-head h2{font-size:24px}
     .card-head p{font-size:14px}
-    .warn{font-size:12px;padding:5px 10px}
+    .warn{font-size:11.5px;padding:5px 10px;white-space:nowrap}
     .q-label{font-size:15.5px}
     .opt{font-size:15px;padding:12px}
     .two{grid-template-columns:1fr}
@@ -116,10 +116,10 @@
   <p class="tagline">אנחנו מחפשות נשות מכירות לאקדמיית הסושיאל הגדולה ביותר במדינת ישראל</p>
 
   <div class="perks">
-    <div class="perk"><div class="ic">💰</div><b><bdi dir="ltr">20–30K</bdi> ₪ בחודש</b><span>בסיס + עמלות, ללא תקרה</span></div>
-    <div class="perk"><div class="ic">📍</div><b>תל אביב</b><span>משרה מלאה, א׳–ה׳</span></div>
-    <div class="perk hl"><div class="ic">🎖️</div><b>מענק</b><span>לחיילות משוחררות אחרי חצי שנה</span></div>
-    <div class="perk"><div class="ic">🎓</div><b>הכשרה מלאה</b><span>ניסיון בטלפון: יתרון, לא חובה</span></div>
+    <div class="perk"><b><i>💰</i><bdi dir="ltr">20–30K</bdi> ₪ בחודש</b><span>בסיס + עמלות, ללא תקרה</span></div>
+    <div class="perk"><b><i>📍</i>תל אביב</b><span>משרה מלאה, א׳–ה׳</span></div>
+    <div class="perk hl"><b><i>🎖️</i>מענק</b><span>לחיילות משוחררות, אחרי חצי שנה</span></div>
+    <div class="perk"><b><i>🎓</i>הכשרה מלאה</b><span>ניסיון בטלפון: יתרון, לא חובה</span></div>
   </div>
 </header>
 
