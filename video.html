@@ -245,6 +245,13 @@
   .checks li.hl{background:rgba(255,222,222,.3)!important;border-color:rgba(255,222,222,.7)!important}
   @media (max-width:640px){.p1 .checks li{align-items:center}.p1 .checks li span:last-child{flex:1}}
 </style>
+<!-- Meta Pixel — «גיוס נשות מכירה» (1104327665822076). כאן נספרת ההמרה: Lead רק למי שהגיעה מהטופס, פעם אחת -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+(function(){ var am = {}; try{ am = JSON.parse(sessionStorage.getItem('ts_am') || '{}') || {}; }catch(e){}
+fbq('init','1104327665822076', am); fbq('track','PageView'); })();
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1104327665822076&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -383,14 +390,50 @@
 /* ===== הגדרות — לעדכן לפני העלאה ===== */
 var CONFIG = {
   VIMEO_ID: "1243834579",                                // מזהה הסרטון ב-Vimeo, למשל "123456789"
-  INSTAGRAM_URL: "https://www.instagram.com/"  // קישור לאינסטגרם של האקדמיה
+  INSTAGRAM_URL: "https://www.instagram.com/tamarsommer/", // קישור לאינסטגרם של האקדמיה
+  FORM_ENDPOINT: "https://script.google.com/macros/s/AKfycbyQvskoSRji7WW0dJyoHLDWxsXaAK0RJyOaIv9nLGfbCSv4ei-dsAT3h0TLFsv-CbGP/exec" // עד איפה צפתה בסרטון → הגיליון
 };
 (function(){
   document.getElementById('igLink').href = CONFIG.INSTAGRAM_URL;
+
+  // ההמרה: Lead עם אותו eventID שנשלח מהשרת, רק אם הגיעה מהטופס ורק פעם אחת (רענון לא נספר שוב)
+  var leadId = '', pending = false, first = '';
+  try{ leadId = sessionStorage.getItem('ts_lead_id') || ''; pending = sessionStorage.getItem('ts_lead_pending') === '1'; first = sessionStorage.getItem('ts_first_name') || ''; }catch(e){}
+  if(pending && window.fbq){
+    fbq('track', 'Lead', { content_name: 'גיוס נשות מכירה' }, { eventID: leadId });
+    try{ sessionStorage.removeItem('ts_lead_pending'); }catch(e){}
+  }
+  if(first){ var hi = document.getElementById('hiName'); if(hi) hi.textContent = 'קיבלנו, ' + first + '!'; }
+
   try{ var n = sessionStorage.getItem('ts_first_name'); if(n) document.getElementById('hiName').textContent = 'קיבלנו, ' + n + '!'; }catch(e){}
   if(CONFIG.VIMEO_ID){
     document.getElementById('videoBox').innerHTML = '<iframe src="https://player.vimeo.com/video/'+CONFIG.VIMEO_ID+'?title=0&byline=0&portrait=0&dnt=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="סרטון גיוס"></iframe>';
   }
+  // מעקב צפייה בסרטון של תמר: אירועים לפיקסל + עדכון השורה שלה בגיליון (התחילה / 25% / 50% / 75% / עד הסוף)
+  var frame = document.querySelector('#videoBox iframe');
+  if(frame){
+    var sent = {};
+    var mark = function(m){
+      if(sent[m]) return; sent[m] = 1;
+      if(window.fbq){ if(m === 0) fbq('trackCustom', 'VSL_Start'); else if(m === 50) fbq('trackCustom', 'VSL_50'); else if(m === 100) fbq('trackCustom', 'VSL_Complete'); }
+      if(leadId && CONFIG.FORM_ENDPOINT){
+        var b = new URLSearchParams({ action: 'video', id: leadId, pct: String(m) });
+        try{ if(!navigator.sendBeacon(CONFIG.FORM_ENDPOINT, b)) fetch(CONFIG.FORM_ENDPOINT, { method:'POST', mode:'no-cors', keepalive:true, body: b }); }catch(e){}
+      }
+    };
+    var vs = document.createElement('script');
+    vs.src = 'https://player.vimeo.com/api/player.js';
+    vs.onload = function(){
+      try{
+        var pl = new Vimeo.Player(frame);
+        pl.on('play', function(){ mark(0); });
+        pl.on('timeupdate', function(d){ var p = (d && d.percent || 0) * 100; [25, 50, 75].forEach(function(m){ if(p >= m) mark(m); }); if(p >= 97) mark(100); });
+        pl.on('ended', function(){ mark(100); });
+      }catch(e){}
+    };
+    document.body.appendChild(vs);
+  }
+
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(es){ es.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target);} }); },{threshold:0.15});
     document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });

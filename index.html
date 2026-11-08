@@ -103,6 +103,12 @@
     .two{grid-template-columns:1fr}
   }
 </style>
+<!-- Meta Pixel — «גיוס נשות מכירה» (1104327665822076). ה-Lead נספר בדף התודה (video.html) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1104327665822076');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1104327665822076&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -195,6 +201,11 @@
     <input type="hidden" name="utm_source" id="h_utm_source">
     <input type="hidden" name="utm_campaign" id="h_utm_campaign">
     <input type="hidden" name="utm_content" id="h_utm_content">
+    <input type="hidden" name="utm_medium" id="h_utm_medium">
+    <input type="hidden" name="adset_name" id="h_adset_name">
+    <!-- מזהה ליד + נתוני התאמה לפיקסל (fbp/fbc) — ממולאים בשליחה -->
+    <input type="hidden" name="lead_id"><input type="hidden" name="fbp"><input type="hidden" name="fbc"><input type="hidden" name="ua"><input type="hidden" name="page_url">
+    <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
 
     <button type="submit" class="submit">שליחה ומעבר לסרטון <span>←</span></button>
     <p class="small">הפרטים ישמשו לתהליך הגיוס בלבד</p>
@@ -209,13 +220,13 @@
 <script>
 /* ===== הגדרות — לעדכן לפני העלאה ===== */
 var CONFIG = {
-  FORM_ENDPOINT: "",          // כתובת ה-Web App של Google Apps Script (השיטס). ריק = לא נשלח לשום מקום
+  FORM_ENDPOINT: "https://script.google.com/macros/s/AKfycbyQvskoSRji7WW0dJyoHLDWxsXaAK0RJyOaIv9nLGfbCSv4ei-dsAT3h0TLFsv-CbGP/exec", // קליטת המועמדות
   NEXT_PAGE_URL: "video.html" // עמוד 2 (הסרטון)
 };
 (function(){
   try{
     var p = new URLSearchParams(location.search);
-    ['utm_source','utm_campaign','utm_content'].forEach(function(k){
+    ['utm_source','utm_medium','utm_campaign','utm_content','adset_name'].forEach(function(k){
       var el = document.getElementById('h_'+k); if(el && p.get(k)) el.value = p.get(k);
     });
   }catch(e){}
@@ -249,11 +260,29 @@ var CONFIG = {
     if(sending || !validate()) return;
     sending = true;
     var btn = form.querySelector('.submit'); btn.style.opacity = .7; btn.firstChild.nodeValue = 'שולחת... ';
-    try{ sessionStorage.setItem('ts_first_name', document.getElementById('f_name').value.trim().split(/\s+/)[0]); }catch(err){}
-    try{ if(window.fbq) fbq('track','Lead'); }catch(err){}
-    var go = function(){ location.href = CONFIG.NEXT_PAGE_URL + location.search; };
+    // מזהה ליד אחד לכל ההמשך: השורה בגיליון, ה-Lead בדף התודה וה-Lead מהשרת (מטא מאחדת לפי eventID)
+    var leadId = 'lp-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    function ck(n){ var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : ''; }
+    function setH(n, v){ var el = form.querySelector('input[name="' + n + '"]'); if(el) el.value = v || ''; }
+    var fbc = ck('_fbc');
+    if(!fbc){ try{ var fc = new URLSearchParams(location.search).get('fbclid'); if(fc) fbc = 'fb.1.' + Date.now() + '.' + fc; }catch(err){} }
+    setH('lead_id', leadId); setH('fbp', ck('_fbp')); setH('fbc', fbc); setH('ua', navigator.userAgent); setH('page_url', location.href.split('#')[0]);
+    var first = document.getElementById('f_name').value.trim().split(/\s+/)[0];
+    var ph = document.getElementById('f_phone').value.replace(/\D/g, ''); if(ph.charAt(0) === '0') ph = '972' + ph.slice(1);
+    try{
+      sessionStorage.setItem('ts_first_name', first);
+      sessionStorage.setItem('ts_lead_id', leadId);
+      sessionStorage.setItem('ts_lead_pending', '1');               // דף התודה יורה Lead פעם אחת ומוחק
+      sessionStorage.setItem('ts_am', JSON.stringify({ ph: ph, fn: first.toLowerCase() }));
+    }catch(err){}
+    var done = false;
+    var go = function(){ if(done) return; done = true; location.href = CONFIG.NEXT_PAGE_URL + location.search; };
     if(CONFIG.FORM_ENDPOINT){
-      fetch(CONFIG.FORM_ENDPOINT,{method:'POST',mode:'no-cors',body:new FormData(form)}).then(go).catch(go);
+      var body = new URLSearchParams(new FormData(form));
+      setTimeout(go, 8000);                                          // לא משאירים אותה לחכות אם הקליטה איטית
+      fetch(CONFIG.FORM_ENDPOINT, { method:'POST', mode:'no-cors', keepalive:true, body: body })
+        .then(go)
+        .catch(function(){ try{ navigator.sendBeacon(CONFIG.FORM_ENDPOINT, body); }catch(err){} go(); });
     } else { go(); }
   });
 })();
