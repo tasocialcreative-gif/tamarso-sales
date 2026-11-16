@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פגישת פיצוח וייעוץ – הטבת 30 של תמר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one narrow column that reads like an invitation; a big "30" as the recurring mark; the form is the destination of every button. */
+:root{
+  --bg:#FAF4F5;        /* blush paper, as in the burgundy landing page */
+  --surface:#FFFFFF;
+  --ink:#2A0D16;
+  --muted:#7A5A63;
+  --plum:#7A1232;      /* wine */
+  --wine-deep:#4A0A1E;
+  --gold:#C2325E;      /* bright wine accent */
+  --blush:#F1D9DF;
+  --line:#E6CDD3;
+  --on-wine:#FFF5F7;
+  --on-wine-muted:#E9C3CD;
+  --ok:#2F7A55;
+  --err:#B3261E;
+  --display:"Assistant","Arial Hebrew",Arial,sans-serif;
+  --body:"Assistant","Arial Hebrew",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6}
+a{color:inherit}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:30px;color:var(--plum)}
+h3{font-size:20px}
+p{margin:0}
+section{padding:56px 0;border-top:1px solid var(--line)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+/* hero */
+.hero{padding:48px 0 56px;border-top:0;position:relative;overflow:hidden}
+.thirty{position:absolute;inset-inline-start:-10px;top:-40px;font-family:var(--display);font-weight:800;font-size:260px;line-height:1;color:var(--plum);opacity:.07;pointer-events:none;user-select:none}
+.tag{display:inline-flex;gap:8px;align-items:center;background:var(--blush);color:var(--plum);font-weight:700;font-size:15px;padding:6px 14px;border-radius:999px}
+.tag i{width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block}
+.hero h1{font-size:clamp(2.1rem,5.6vw,3.4rem);margin-top:18px;color:var(--plum);position:relative}
+.hero .lead{font-size:20px;color:var(--muted);margin-top:14px;max-width:34em;position:relative}
+.offer{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;position:relative}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 16px;display:flex;flex-direction:column;min-width:140px}
+.chip b{font-family:var(--display);font-size:26px;color:var(--plum);font-variant-numeric:tabular-nums}
+.chip span{font-size:15px;color:var(--muted)}
+.chip.gold{border-color:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--plum);color:var(--on-wine);text-decoration:none;font-family:var(--display);font-weight:700;font-size:19px;padding:16px 30px;border-radius:999px;border:0;cursor:pointer;transition:transform .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn.wa{background:#1F8F55}
+.btn.ghost{background:transparent;color:var(--plum);border:2px solid var(--plum)}
+.cta-row{margin-top:28px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;position:relative}
+.cta-row small{color:var(--muted);font-size:15px}
+
+/* what */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px}
+.card .n{font-family:var(--display);font-weight:800;color:var(--gold);font-size:15px;letter-spacing:.04em}
+.card h3{margin-top:6px;color:var(--plum)}
+.card p{color:var(--muted);font-size:16px;margin-top:6px}
+
+/* bonus */
+.bonus{background:var(--wine-deep);color:var(--on-wine);border-radius:20px;padding:28px;margin-top:8px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.ticket{width:84px;height:84px;border-radius:16px;background:var(--on-wine);display:grid;place-items:center;font-family:var(--display);font-weight:800;color:var(--plum);font-size:15px;text-align:center;line-height:1.1}
+.bonus h2{color:var(--on-wine);font-size:26px}
+.bonus p{color:var(--on-wine-muted);margin-top:6px}
+
+/* steps */
+.steps{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:12px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.steps li::before{content:counter(s);width:44px;height:44px;border-radius:50%;background:var(--blush);border:2px solid var(--plum);color:var(--plum);font-family:var(--display);font-weight:800;display:grid;place-items:center}
+.steps b{display:block;color:var(--plum)}
+.steps span{color:var(--muted);font-size:16px}
+
+/* form */
+form{margin-top:24px;display:grid;gap:22px}
+.field{display:grid;gap:8px}
+.field > label,.field legend{font-weight:700;font-size:17px}
+.req{color:var(--gold)}
+.hint{color:var(--muted);font-size:15px;font-weight:400}
+input[type=text],input[type=tel],textarea{font:inherit;font-size:17px;width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+textarea{min-height:96px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--plum)}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:inline-block;padding:9px 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--surface);font-size:16px;cursor:pointer}
+.opt input:checked + span{background:var(--plum);border-color:var(--plum);color:var(--on-wine)}
+.opt input:focus-visible + span{outline:3px solid var(--gold);outline-offset:2px}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:16px;color:var(--muted)}
+.agree input{width:20px;height:20px;margin-top:3px;accent-color:var(--plum)}
+.error{color:var(--err);font-size:15px;display:none}
+.field.bad .error{display:block}
+.field.bad input,.field.bad textarea{border-color:var(--err)}
+.formbox{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+
+/* done */
+#done{display:none}
+#done.show{display:block}
+.donebox{background:var(--surface);border:2px solid var(--ok);border-radius:20px;padding:28px;display:grid;gap:16px}
+.donebox h2{color:var(--ok)}
+.summary{white-space:pre-wrap;background:var(--bg);border-radius:12px;padding:14px;font-size:15px;max-height:220px;overflow:auto}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.note{font-size:14px;color:var(--muted)}
+
+/* faq */
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+details + details{margin-top:10px}
+summary{font-weight:700;cursor:pointer;color:var(--plum)}
+details p{margin-top:8px;color:var(--muted)}
+footer{padding:32px 0 48px;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+
+@media (max-width:640px){
+  body{font-size:17px}
+  .hero h1{font-size:32px}
+  .thirty{font-size:180px}
+  .trio{grid-template-columns:1fr}
+  .bonus{grid-template-columns:1fr}
+  h2{font-size:26px}
+  .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
+
+/* ===== festive layer ===== */
+.hero{background:radial-gradient(120% 90% at 50% 0%,#9A1A42 0%,var(--plum) 40%,var(--wine-deep) 100%);color:var(--on-wine);padding:56px 0 64px;text-align:center;overflow:hidden;position:relative}
+#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero-in{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px}
+.hero .tag{background:rgba(255,245,247,.14);color:var(--on-wine);border:1px solid rgba(255,245,247,.3);backdrop-filter:blur(4px)}
+.hero .tag i{background:#FFB8CB;box-shadow:0 0 10px #FFB8CB}
+.big30{font-family:var(--display);font-weight:800;font-size:clamp(7rem,22vw,12rem);line-height:.9;letter-spacing:-.04em;
+  background:linear-gradient(100deg,#FFD6E0 0%,#FFFFFF 30%,#F5A3BA 50%,#FFFFFF 70%,#FFD6E0 100%);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 4s linear infinite;filter:drop-shadow(0 10px 30px rgba(0,0,0,.35))}
+@keyframes shimmer{to{background-position:-200% 0}}
+.hero h1{color:var(--on-wine);margin-top:0;max-width:16em}
+.hero .price{background:var(--on-wine);color:var(--plum);padding:0 .25em;border-radius:.3em;white-space:nowrap;display:inline-block;transform:rotate(-2deg)}
+.hero .lead{color:var(--on-wine-muted);margin-inline:auto;text-align:center}
+.spots{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:6px}
+.dots{display:flex;gap:8px}
+.dots span{width:16px;height:16px;border-radius:50%;background:var(--on-wine);box-shadow:0 0 0 3px rgba(255,245,247,.18);animation:pulse 2.4s ease-in-out infinite}
+.dots span.taken{background:transparent;border:2px solid var(--on-wine-muted);box-shadow:none;animation:none}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.spots span b{font-family:var(--display);font-size:1.4rem}
+.hero .cta-row{justify-content:center;flex-direction:column}
+.hero .cta-row small{color:var(--on-wine-muted)}
+.hero .btn{background:var(--on-wine);color:var(--plum);font-size:1.2rem;padding:18px 38px;box-shadow:0 14px 30px -10px rgba(0,0,0,.45)}
+.shine{position:relative;overflow:hidden}
+.shine::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(194,50,94,.28) 50%,transparent 70%);transform:translateX(-120%);animation:sweep 3s ease-in-out infinite}
+@keyframes sweep{60%,100%{transform:translateX(120%)}}
+.balloons{position:absolute;inset:0;pointer-events:none}
+.bl{position:absolute;width:56px;height:68px;border-radius:50% 50% 48% 48%;opacity:.9;animation:floaty 6s ease-in-out infinite}
+.bl::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:70px;background:rgba(255,245,247,.45)}
+.b1{background:radial-gradient(circle at 30% 30%,#FFD6E0,#C2325E);inset-inline-start:2%;top:30px}
+.b2{background:radial-gradient(circle at 30% 30%,#fff,#F5A3BA);inset-inline-end:4%;top:110px;width:44px;height:54px;animation-delay:-2s}
+.b3{background:radial-gradient(circle at 30% 30%,#E9C3CD,#7A1232);inset-inline-end:14%;top:20px;width:36px;height:44px;animation-delay:-4s}
+@keyframes floaty{0%,100%{translate:0 0;rotate:-4deg}50%{translate:0 -16px;rotate:4deg}}
+
+.marquee{background:var(--blush);color:var(--plum);overflow:hidden;border-block:1px solid var(--line);direction:ltr}
+.track{display:flex;gap:28px;width:max-content;padding:12px 0;animation:marq 26s linear infinite;font-weight:800;font-size:1.05rem;direction:rtl}
+.track i{font-style:normal;color:var(--gold)}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+.card{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.card:hover{transform:translateY(-6px);border-color:var(--plum);box-shadow:0 22px 40px -26px var(--plum)}
+.card .n{font-size:2.2rem;line-height:1;background:linear-gradient(135deg,var(--plum),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.bonus{display:grid;grid-template-columns:120px 1fr;gap:0;padding:0;background:var(--wine-deep);border-radius:22px;overflow:hidden;position:relative;box-shadow:0 30px 60px -30px var(--plum);transform:rotate(-1deg);transition:transform .3s ease}
+.bonus:hover{transform:rotate(0) scale(1.01)}
+.stub{background:linear-gradient(160deg,#C2325E,var(--plum));color:var(--on-wine);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-inline-end:3px dashed rgba(255,245,247,.5);position:relative;font-weight:800;letter-spacing:.14em;font-size:.8rem;direction:ltr}
+.stub b{font-size:2.4rem;letter-spacing:0;line-height:1}
+.bonus::before,.bonus::after{content:"";position:absolute;inset-inline-start:108px;width:24px;height:24px;border-radius:50%;background:var(--bg)}
+.bonus::before{top:-12px}.bonus::after{bottom:-12px}
+.bonus-body{padding:28px}
+.kicker{display:inline-block;background:var(--on-wine);color:var(--plum);font-weight:800;font-size:.85rem;padding:4px 12px;border-radius:999px;margin-bottom:10px}
+
+.formbox{border:2px solid var(--plum);box-shadow:0 24px 50px -30px var(--plum)}
+#apply h2::after{content:" ✦";color:var(--gold)}
+.donebox{border-color:var(--plum);text-align:center;justify-items:center}
+.donebox h2{color:var(--plum)}
+.donebox .row{justify-content:center}
+.summary{text-align:right;width:100%}
+
+@media (max-width:640px){
+  .bonus{grid-template-columns:1fr;transform:none}
+  .stub{flex-direction:row;padding:14px;border-inline-end:0;border-bottom:3px dashed rgba(255,245,247,.5)}
+  .bonus::before,.bonus::after{display:none}
+  .bl{display:none}
+  .hero .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  .big30,.dots span,.shine::after,.bl,.track{animation:none}
+  .card,.bonus{transition:none}
+}
+
+/* photos */
+@media (min-width:900px){
+  .hero .wrap{max-width:1080px}
+  .hero-in{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;text-align:right}
+  .hero-text{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+  .hero-text .lead{text-align:right;margin-inline:0}
+  .hero-text .spots{align-items:flex-start}
+  .hero-text .cta-row{align-items:flex-start}
+  .big30{margin-block:-10px}
+}
+.hero-text{display:flex;flex-direction:column;align-items:center;gap:18px}
+.polaroid{margin:0;background:var(--on-wine);padding:12px 12px 16px;border-radius:6px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);transform:rotate(3deg);max-width:360px;width:100%;justify-self:center;transition:transform .35s ease}
+.polaroid:hover{transform:rotate(0) scale(1.02)}
+.polaroid img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:50% 45%;border-radius:2px}
+.polaroid figcaption{color:var(--plum);font-weight:800;text-align:center;margin-top:10px;font-size:1.05rem}
+@media (max-width:899px){.polaroid{max-width:300px;margin-top:10px}}
+
+.cake-band{position:relative;padding:0;border-top:0;min-height:520px;display:grid;overflow:hidden;background:var(--wine-deep)}
+.cake-band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+@media (min-width:900px){.cake-band{grid-template-columns:1fr 1fr;min-height:560px}.cake-band img{position:relative;grid-column:2;grid-row:1;height:100%;min-height:560px}.cake-band::before{display:none}.cake-over{grid-column:1;grid-row:1;justify-self:center;margin:48px}}
+.cake-band::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(74,10,30,.15) 0%,rgba(74,10,30,.55) 45%,rgba(74,10,30,.92) 100%);z-index:1}
+.cake-over{position:relative;z-index:2;align-self:center;justify-self:start;max-width:440px;margin:48px 6vw;color:var(--on-wine);display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.cake-over h2{color:var(--on-wine);font-size:clamp(2rem,5vw,3rem)}
+.cake-over p{color:var(--on-wine-muted)}
+.cake-over .btn{background:var(--on-wine);color:var(--plum)}
+@media (max-width:640px){
+  .cake-band{min-height:620px}
+  .cake-band::before{background:linear-gradient(180deg,rgba(74,10,30,.05) 0%,rgba(74,10,30,.6) 45%,rgba(74,10,30,.95) 100%)}
+  .cake-over{align-self:end;margin:28px 20px}
+}
+@media (prefers-reduced-motion:reduce){.polaroid{transition:none}}
+
+/* cutout hero */
+.hero{padding-bottom:0}
+.cutout{margin:0;position:relative;width:100%;max-width:380px;justify-self:center;align-self:end;display:grid;place-items:end center}
+.cutout img{position:relative;z-index:2;width:78%;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.halo{position:absolute;z-index:0;left:50%;bottom:22%;width:105%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,184,203,.55) 0%,rgba(194,50,94,.35) 40%,transparent 70%)}
+.ghost30{position:absolute;z-index:1;top:4%;left:50%;transform:translateX(-50%);font-family:var(--display);font-weight:800;font-size:clamp(12rem,30vw,20rem);line-height:.8;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:2px rgba(255,245,247,.35)}
+.sticker{position:absolute;z-index:3;top:16%;inset-inline-end:2%;width:92px;height:92px;border-radius:50%;background:var(--on-wine);color:var(--plum);display:grid;place-items:center;text-align:center;font-weight:800;font-size:1.05rem;line-height:1.05;transform:rotate(-12deg);box-shadow:0 10px 24px -8px rgba(0,0,0,.5);animation:wobble 3.5s ease-in-out infinite;direction:ltr}
+@keyframes wobble{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(-4deg) scale(1.06)}}
+@media (min-width:900px){.hero{padding-top:48px}.hero-in{align-items:end}.hero-text{padding-bottom:64px}.cutout{max-width:460px}}
+@media (max-width:899px){.cutout{max-width:320px;margin-top:8px}.sticker{width:74px;height:74px;font-size:.9rem}}
+@media (prefers-reduced-motion:reduce){.sticker{animation:none}}
+
+/* ground the cutout */
+.hero{overflow:visible}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(180deg,transparent,rgba(30,4,12,.55));pointer-events:none;z-index:0}
+.cutout{margin-bottom:-6px}
+.cutout img{width:84%;transform-origin:50% 100%;animation:rise .9s cubic-bezier(.2,.9,.3,1.2) both}
+.floor{position:absolute;z-index:1;bottom:-4px;left:50%;width:70%;height:34px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse at center,rgba(0,0,0,.55) 0%,rgba(0,0,0,.25) 45%,transparent 72%)}
+.halo{bottom:18%;width:115%;background:radial-gradient(circle,rgba(255,214,224,.75) 0%,rgba(245,163,186,.45) 30%,rgba(194,50,94,.25) 55%,transparent 72%);animation:breathe 5s ease-in-out infinite}
+@keyframes rise{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes breathe{0%,100%{opacity:.85;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.06)}}
+.marquee{position:relative;z-index:2}
+@media (prefers-reduced-motion:reduce){.cutout img,.halo{animation:none}}
+
+/* hero is text-only again */
+@media (min-width:900px){.hero-in{display:flex;flex-direction:column;align-items:center;text-align:center}.hero-text{align-items:center;padding-bottom:0}.hero-text .lead{text-align:center;margin-inline:auto}.hero-text .spots,.hero-text .cta-row{align-items:center}}
+.hero{padding-bottom:64px}
+.hero::after{display:none}
+/* finale with the cutout */
+.finale{position:relative;overflow:hidden;padding:56px 0 0;border-top:0;background:radial-gradient(110% 90% at 30% 100%,#9A1A42 0%,var(--plum) 40%,var(--wine-deep) 100%);color:var(--on-wine)}
+.finale::after{content:"";position:absolute;left:0;right:0;bottom:0;height:80px;background:linear-gradient(180deg,transparent,rgba(30,4,12,.55));pointer-events:none}
+.finale .wrap{max-width:1080px}
+.finale-in{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;position:relative;z-index:1}
+.finale-text{display:flex;flex-direction:column;gap:16px;align-items:flex-start;padding-bottom:72px}
+.finale-text h2{color:var(--on-wine);font-size:clamp(2rem,4.6vw,3rem)}
+.finale-text p{color:var(--on-wine-muted);font-size:1.15rem}
+.finale .btn{background:var(--on-wine);color:var(--plum)}
+.finale .cutout{max-width:440px}
+@media (max-width:899px){.finale-in{grid-template-columns:1fr;text-align:center}.finale-text{align-items:center;padding-bottom:8px}.finale .cutout{max-width:300px}}
+
+/* smiling photo behind the hero CTA */
+.hero{overflow:hidden}
+html,body{overflow-x:clip}
+.smile{margin:8px 0 0;position:relative;width:min(290px,66vw);display:grid;place-items:center}
+.smile img{position:relative;z-index:1;width:100%;height:auto;display:block;
+  -webkit-mask-image:linear-gradient(180deg,#000 84%,transparent 99%);mask-image:linear-gradient(180deg,#000 84%,transparent 99%);
+  animation:rise .9s cubic-bezier(.2,.9,.3,1.2) both}
+.smile-halo{position:absolute;z-index:0;top:4%;left:50%;width:130%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,214,224,.6) 0%,rgba(245,163,186,.35) 32%,rgba(194,50,94,.2) 55%,transparent 72%);animation:breathe 5s ease-in-out infinite}
+.hero .cta-row.over{position:relative;z-index:3;margin-top:-48px}
+.hero .cta-row.over small{background:rgba(74,10,30,.55);padding:4px 12px;border-radius:999px}
+@media (max-width:640px){.hero .cta-row.over{margin-top:-36px}}
+@media (prefers-reduced-motion:reduce){.smile img,.smile-halo{animation:none}}
+.h1-sub{display:block;font-size:.62em;font-weight:700;color:var(--on-wine-muted);margin-top:.2em}
+.hero .lead .price{font-weight:800;font-size:1.05em}
+.reveal{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--on-wine);color:var(--plum);border-radius:18px;padding:12px 20px;transform:none;box-shadow:0 18px 40px -16px rgba(0,0,0,.55)}
+.reveal-label{font-weight:800;font-size:.9rem;color:var(--gold)}
+.reveal-price{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,4.6vw,2.6rem);line-height:1.1}
+.reveal-note{font-size:1rem;color:var(--muted)}
+@media (max-width:899px){.reveal{align-items:center}}
+.session-name{display:inline-flex;max-width:100%;text-align:center;align-items:center;gap:12px;background:var(--on-wine);color:var(--plum);padding:10px 14px 10px 22px;border-radius:999px;box-shadow:0 16px 36px -14px rgba(0,0,0,.55);transform:none}
+.sn-main{font-family:var(--display);font-weight:800;font-size:clamp(1.4rem,3.6vw,2rem);line-height:1.1}
+.sn-badge{background:var(--plum);color:var(--on-wine);font-weight:800;font-size:clamp(1rem,2.6vw,1.3rem);padding:6px 14px;border-radius:999px;direction:ltr}
+.spots.top{background:var(--on-wine);color:var(--plum);padding:12px 26px 14px;border-radius:22px;gap:10px;box-shadow:0 18px 40px -16px rgba(0,0,0,.55);transform:rotate(-2deg);margin-top:4px}
+.spots-big{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,4.5vw,2.2rem);line-height:1}
+.spots.top .spots-big b{font-size:1.6em;color:var(--gold);vertical-align:-.08em}
+.spots.top .dots span{background:var(--plum);box-shadow:0 0 0 3px rgba(122,18,50,.15);width:18px;height:18px}
+.spots.top .dots span.taken{background:transparent;border:2px solid var(--plum)}
+.gift-line{display:inline-block;margin-top:.5em;color:var(--on-wine);font-weight:800}
+.fit{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0;padding:0;list-style:none}
+.fit-intro{margin-top:14px;font-size:1.15rem;font-weight:700;color:var(--muted)}
+.fit-card.key{margin-top:12px}
+.fit-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;align-items:center !important;display:flex;gap:14px;align-items:flex-start;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.fit-card:hover{transform:translateY(-4px);border-color:var(--plum);box-shadow:0 20px 36px -24px var(--plum)}
+.fit-check{flex:none;width:32px;height:32px;border-radius:50%;background:var(--plum);color:var(--on-wine);display:grid;place-items:center;font-weight:800;font-size:1.2rem}
+.fit-card p{font-size:1.08rem;font-weight:600;color:var(--ink);line-height:1.4;padding-top:0}
+@media (max-width:640px){.fit{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.fit-card{transition:none}}
+.fit-card.key{background:var(--plum);border-color:var(--plum)}
+.fit-card.key p{color:var(--on-wine);font-size:1.2rem;font-weight:700}
+.fit-card.key .fit-check{background:var(--on-wine);color:var(--plum)}
+.perks{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.perks li{display:flex;gap:10px;align-items:center;color:var(--on-wine);font-weight:700;font-size:1.05rem}
+.perks li::before{content:"✦";color:#FFB8CB}
+.perk-note{margin-top:12px;font-size:.95rem}
+.gala{display:block;direction:ltr;text-align:right;font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:700;font-size:1.25em;color:#FFB8CB;margin-top:.15em;letter-spacing:.01em}
+/* luxe gold ticket */
+.bonus{align-items:stretch;--foil:linear-gradient(100deg,#8C6A2A 0%,#E9CF8A 22%,#FFF1C4 38%,#C9A04E 55%,#F5DD98 72%,#8C6A2A 100%);
+  background:radial-gradient(120% 140% at 85% 0%,#3A1220 0%,#1C0910 55%,#12060A 100%);color:#EADBC0;
+  border:1px solid #B8904A;box-shadow:0 0 0 1px #12060A,0 0 0 3px #8C6A2A,0 34px 70px -28px rgba(18,6,10,.9)}
+.bonus-body{position:relative;margin:10px;border:1px solid rgba(201,160,78,.45);border-radius:14px;padding:24px 26px}
+.bonus h2{background:var(--foil);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:foil 6s linear infinite}
+.gala{background:var(--foil);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:foil 6s linear infinite;font-size:1.35em}
+@keyframes foil{to{background-position:-200% 0}}
+.bonus p,.bonus .perk-note{color:#BFA987}
+.bonus .kicker{background:var(--foil);color:#1C0910;letter-spacing:.02em}
+.perks li{color:#F1E4C8;font-weight:600}
+.perks li::before{color:#E2C27A}
+.stub{align-self:stretch;background:var(--foil);background-size:100% 100%;color:#1C0910;border-inline-end:0 !important;border-left:2px dashed rgba(28,9,16,.55) !important}
+.stub b{color:#1C0910}
+.bonus::before,.bonus::after{background:var(--bg);box-shadow:inset 0 0 0 1px #B8904A}
+@media (max-width:640px){.stub{border-left:0 !important;border-bottom:2px dashed rgba(28,9,16,.55)}.bonus-body{margin:8px}}
+@media (prefers-reduced-motion:reduce){.bonus h2,.gala{animation:none}}
+.reveal-was{font-size:1rem;color:var(--muted);font-weight:600}
+.reveal-old{white-space:nowrap;font-family:var(--display);font-weight:800;font-size:1.15rem;color:var(--muted);margin-bottom:6px}
+@media (max-width:899px){.reveal{text-align:center}}
+.reveal-label{font-size:1rem !important}
+/* form page mode */
+body.form-mode header.hero,body.form-mode .marquee,body.form-mode main > section:not(#apply),body.form-mode footer{display:none}
+body.form-mode #apply{border-top:0;padding-top:0;min-height:100vh}
+.form-top{background:var(--wine-deep);color:var(--on-wine);margin-bottom:28px}
+.form-top-in{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:14px}
+.back-link{color:var(--on-wine);text-decoration:none;font-weight:700;font-size:.95rem;padding:6px 12px;border:1px solid rgba(255,245,247,.35);border-radius:999px}
+.back-link:hover{background:rgba(255,245,247,.12)}
+.form-top-tag{font-weight:800;font-size:.95rem;color:var(--on-wine-muted)}
+.form-intro{display:grid;gap:6px;margin-top:12px;color:var(--muted);font-size:1.05rem;max-width:36em}
+.form-intro b{color:var(--plum)}
+.scale{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.scale-end{font-size:.9rem;color:var(--muted)}
+.scale-opts{flex-wrap:nowrap}
+.scale-opts .opt span{width:46px;height:46px;padding:0;display:grid;place-items:center;font-weight:800;font-size:1.05rem}
+.no-guarantee{background:var(--blush);color:var(--plum);font-weight:700;font-size:.98rem;padding:12px 16px;border-radius:12px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="wrap hero-in">
+    <div class="balloons" aria-hidden="true"><span class="bl b1"></span><span class="bl b2"></span><span class="bl b3"></span></div>
+    <div class="hero-text">
+    <span class="tag"><i></i>הטבת יום הולדת 30 של תמר</span>
+    <div class="spots top" aria-label="7 מקומות בלבד">
+      <span class="spots-big">רק <b id="spots">7</b> מקומות</span>
+      <div class="dots" id="dots"></div>
+    </div>
+    <div class="big30" aria-hidden="true">30</div>
+    <h1>חוגגים רק פעם אחת<br><span class="h1-sub">וגם ההזדמנות הזאת. כשהמקומות נגמרים, זה נגמר.</span></h1>
+    <p class="lead">היום אני חוגגת 30 ויותר מתמיד מרגישה כמה החיים הם קצרים.<br>כמה הייתי שמחה שהיה לי מישהי להתייעץ איתה או לקבל ממנה טיפים כדי באמת לקצר את הדרך.<br><strong class="gift-line">זאת המתנה של היום הולדת שלי - בשבילך.</strong></p>
+    <div class="session-name"><span class="sn-main">פגישת ייעוץ ופיצוח שלי ושלך, אחת על אחת</span></div>
+    <figure class="smile">
+      <div class="smile-halo" aria-hidden="true"></div>
+      <img src="/tamar30/img/tamar-smile2.webp" alt="תמר מחייכת ומחזיקה עוגת יום הולדת עם הכיתוב Tamar 30" width="672" height="1100">
+    </figure>
+    <div class="cta-row over">
+      <a class="btn shine" href="#price">תשרייני לי מקום</a>
+      <small>*אני לא מקבלת כל אחת. רק אחרי מילוי השאלון, במידה ואבין שבאמת יש לי איך לעזור, ניצור איתך קשר.</small>
+    </div>
+    </div>
+    
+  </div>
+</header>
+<div class="marquee" aria-hidden="true"><div class="track">
+  <span>הטבת יום הולדת 30</span><i>✦</i><span>פגישת פיצוח וייעוץ אישית עם תמר 1:1</span><i>✦</i><span>7 מקומות בלבד</span><i>✦</i><span>בונוס ל־3 הראשונות: כרטיס לאירוע פתיחת שנה 2027 – Creators Gala</span><i>✦</i>
+  <span>הטבת יום הולדת 30</span><i>✦</i><span>פגישת פיצוח וייעוץ אישית עם תמר 1:1</span><i>✦</i><span>7 מקומות בלבד</span><i>✦</i><span>בונוס ל־3 הראשונות: כרטיס לאירוע פתיחת שנה 2027 – Creators Gala</span><i>✦</i>
+</div></div>
+
+<main>
+<section>
+  <div class="wrap">
+    <h2>למי זה בכלל מתאים?</h2>
+    <p class="fit-intro">זה בשבילך אם:</p>
+    <ul class="fit">
+      <li class="fit-card"><span class="fit-check" aria-hidden="true">✓</span><p>את קמה כל בוקר עם מועקה ענקית על הלב מהעבודה הנוכחית שלך</p></li>
+      <li class="fit-card"><span class="fit-check" aria-hidden="true">✓</span><p>את חושבת בתקופה האחרונה על להיכנס לעולם הסושיאל</p></li>
+      <li class="fit-card"><span class="fit-check" aria-hidden="true">✓</span><p>את כבר בעולם הסושיאל ולא מצליחה לסגור ריטיינרים של יותר מ־2,500 ₪</p></li>
+      <li class="fit-card"><span class="fit-check" aria-hidden="true">✓</span><p>את שורפת שעות באינסטגרם ומבינה בטרנדים, אבל אין לך מושג איך הופכים את זה לקריירה אמיתית</p></li>
+      <li class="fit-card"><span class="fit-check" aria-hidden="true">✓</span><p>נמאס לך מהבוס שלך</p></li>
+      <li class="fit-card"><span class="fit-check" aria-hidden="true">✓</span><p>את מרגישה תקיעות ולא מבינה מה חסר לך כדי לעבור לשלב הבא</p></li>
+    </ul>
+    <div class="fit-card key"><span class="fit-check" aria-hidden="true">★</span><p><b>והכי חשוב</b> – את מוכנה לעבוד קשה בשביל השינוי.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="bonus">
+      <div class="stub" aria-hidden="true"><span>ONLY</span><b>3</b><span>VIP</span></div>
+      <div class="bonus-body">
+        <span class="kicker">בונוס ל־3 הראשונות בלבד</span>
+        <h2>כרטיס כניסה מתנה לאירוע פתיחת שנה 2027<span class="gala">Creators Gala</span></h2>
+        <ul class="perks">
+          <li>מותגי ביוטי מובילים</li>
+          <li>הרצאות של אנשי המפתח המובילים בתעשיית השיווק</li>
+          <li>פאנל יוצרות תוכן</li>
+        </ul>
+        <p class="perk-note">מגיע ל־3 הראשונות שעוברות את השאלון, מתקבלות ומשלימות תשלום.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>איך זה עובד</h2>
+    <ol class="steps">
+      <li><div><b>ממלאת שאלון קצר</b><span>כמה דקות, כדי שנכיר אותך ואת מה שאת צריכה.</span></div></li>
+      <li><div><b>אנחנו עוברות על התשובות</b><span>יש רק 7 מקומות, ואנחנו בוחרות את מי שהפגישה הזו באמת תקדם.</span></div></li>
+      <li><div><b>מתאימה? מקבלת מאיתנו הודעה ולינק לתשלום</b><span>רק אחרי שאישרנו את ההתאמה.</span></div></li>
+      <li><div><b>בוחרת מועד ביומן</b><span>אחרי התשלום נשלח לך קישור ליומן לבחירת זמן לפגישה.</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="cake-band" aria-label="הזמנה">
+  <img src="/tamar30/img/cake.jpg" alt="עוגת יום הולדת לבנה עם קישוטי בורדו וכיתוב Tamar 30" width="1200" height="1800" loading="lazy">
+  <div class="cake-over">
+    <h2>אני הולכת לדבר רק פרקטיקה טהורה</h2>
+    <p>עם מלא ערך, להעביר אותך פיצוח מלא ולתת לך בהירות אמיתית ונקודתית לקראת השנה החדשה 2027, שתוכלי ליישם כבר מהיום.</p>
+    <a class="btn" href="#price">לפרטים ולמחיר</a>
+  </div>
+</section>
+
+<section class="finale" id="price" aria-label="המחיר">
+  <div class="wrap finale-in">
+    <div class="finale-text">
+      <span class="kicker">רק 7 מקומות</span>
+      <h2>נחגוג יחד את ה־30 שלי, ואת הצעד הבא שלך</h2>
+      <div class="reveal">
+        <span class="reveal-was">שיחת ייעוץ כזאת איתי מתומחרת ב־</span>
+        <span class="reveal-old">1,600 ₪ + מע״מ</span>
+        <span class="reveal-label">אבל אתן מקבלות אותה ב־</span>
+        <span class="reveal-price">130 ₪ בלבד</span>
+        <span class="reveal-note">פגישת פיצוח וייעוץ אישית עם תמר, 1:1</span>
+      </div>
+      <p>ול־3 הראשונות גם כרטיס מתנה לאירוע פתיחת שנה 2027 – Creators Gala.</p>
+      <a class="btn shine open-form" href="#apply">למילוי שאלון ההתאמה</a>
+    </div>
+    <figure class="cutout">
+      <div class="halo" aria-hidden="true"></div>
+      <img src="/tamar30/img/tamar-cut.webp" alt="תמר יושבת על כיסא ומחזיקה עוגת יום הולדת" width="723" height="1400">
+      <span class="floor" aria-hidden="true"></span>
+      <span class="sticker" aria-hidden="true">Happy<br>30</span>
+    </figure>
+  </div>
+</section>
+<section id="apply" hidden>
+  <div class="form-top">
+    <div class="wrap form-top-in">
+      <a href="#price" class="back-link" id="backLink">→ חזרה לעמוד</a>
+      <span class="form-top-tag">הטבת יום הולדת 30 של תמר</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <h2>שאלון פיצוח אסטרטגי 1:1 עם תמר</h2>
+    <div class="form-intro">
+      <p><b>לפני שנקבע פגישה - כמה שאלות קצרות</b></p>
+      <p>השאלון עוזר לי להבין איפה אתן עומדות היום ומה באמת תוקע אתכן מלהגיע לאן שאתן רוצות.</p>
+      <p>ענו עליו בשקיפות מלאה.</p>
+      <p>אם תהיה התאמה, תקבלו ממני הודעת וואטסאפ קולית + לינק לשריון פגישת הפיצוח שלנו בזום.</p>
+      <p class="hint">שדות עם <span class="req">*</span> הם חובה.</p>
+    </div>
+
+    <div class="formbox" id="formbox">
+    <form id="f" novalidate>
+      <div class="field" data-req>
+        <label for="name">שם מלא <span class="req">*</span></label>
+        <input type="text" id="name" name="name" autocomplete="name">
+        <div class="error">איך קוראים לך?</div>
+      </div>
+
+      <div class="field" data-req data-phone>
+        <label for="phone">מספר טלפון <span class="req">*</span></label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="05X-XXXXXXX" dir="ltr" style="text-align:right">
+        <div class="error">צריך מספר נייד תקין, כדי שנוכל לחזור אלייך.</div>
+      </div>
+
+      <div class="field" data-req>
+        <label for="ig">שם משתמש באינסטגרם <span class="req">*</span></label>
+        <input type="text" id="ig" name="ig" dir="ltr" style="text-align:right" placeholder="@" autocapitalize="off">
+        <div class="error">צריך את שם המשתמש שלך באינסטגרם.</div>
+      </div>
+
+      <div class="field" data-req data-radio="exp">
+        <fieldset>
+          <legend>מהי רמת הניסיון בניהול סושיאל היום? <span class="req">*</span></legend>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="exp" id="exp1" value="אין ניסיון כלל"><span>אין ניסיון כלל</span></label>
+            <label class="opt"><input type="radio" name="exp" id="exp2" value="ניסיון בסיסי ומעלה"><span>ניסיון בסיסי ומעלה</span></label>
+            <label class="opt"><input type="radio" name="exp" id="exp3" value="שליטה מלאה"><span>שליטה מלאה</span></label>
+          </div>
+        </fieldset>
+        <div class="error">בחרי את האפשרות הכי קרובה.</div>
+      </div>
+
+      <div class="field" data-req>
+        <label for="problem">מה הבעיה המרכזית שלכן היום שמונעת מכן להגיע לאן שאתן רוצות? <span class="req">*</span></label>
+        <textarea id="problem" name="problem"></textarea>
+        <div class="error">כמה מילים מספיקות.</div>
+      </div>
+
+      <div class="field" data-req>
+        <label for="work">במה אתן עובדות היום? <span class="req">*</span></label>
+        <input type="text" id="work" name="work">
+        <div class="error">ספרי בקצרה במה את עובדת.</div>
+      </div>
+
+      <div class="field" data-req data-radio="want">
+        <fieldset>
+          <legend>כמה אתן רוצות להגיע למטרות שלכן ובאמת להתחיל להתפרנס מניהול סושיאל? <span class="req">*</span></legend>
+          <div class="scale">
+            <div class="opts scale-opts">
+              <label class="opt"><input type="radio" name="want" id="w1" value="1"><span>1</span></label>
+              <label class="opt"><input type="radio" name="want" id="w2" value="2"><span>2</span></label>
+              <label class="opt"><input type="radio" name="want" id="w3" value="3"><span>3</span></label>
+              <label class="opt"><input type="radio" name="want" id="w4" value="4"><span>4</span></label>
+              <label class="opt"><input type="radio" name="want" id="w5" value="5"><span>5</span></label>
+            </div>
+            <span class="scale-end">1 = קצת · 5 = מאוד מאוד</span>
+          </div>
+        </fieldset>
+        <div class="error">בחרי מספר מ־1 עד 5.</div>
+      </div>
+
+      <p class="no-guarantee">*מילוי הטופס לא מבטיח מקום. רק אם תהיה התאמה, ניצור איתך קשר.</p>
+      <button class="btn" type="submit">שליחה</button>
+    </form>
+    </div>
+
+    <div id="done" aria-live="polite">
+      <div class="donebox">
+        <h2>עוד צעד אחד והבקשה אצלנו</h2>
+        <p>לחצי על הכפתור הירוק כדי לשלוח לנו את התשובות בוואטסאפ. ההודעה כבר כתובה, רק ללחוץ "שליחה".</p>
+        <div class="row">
+          <a class="btn wa" id="waBtn" href="#" target="_blank" rel="noopener">שליחה בוואטסאפ</a>
+          <button class="btn ghost" type="button" id="copyBtn">העתקת התשובות</button>
+        </div>
+        <p class="note" id="waNum"></p>
+        <div class="summary" id="summary"></div>
+        <p>אז מה קורה עכשיו? תוך 2 ימי עסקים נחזור אלייך לתיאום שיחת פיצוח וקבלת הפרטים הנוספים ♥</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>שאלות קצרות</h2>
+    <div style="margin-top:20px">
+      <details><summary>למה צריך למלא שאלון?</summary><p>כי יש רק 7 מקומות, ואנחנו רוצות שכל פגישה תביא תוצאה. השאלון עוזר לנו לוודא שזה הזמן והמקום הנכון בשבילך.</p></details>
+      <details><summary>אפשר לשריין מקום בלי למלא שאלון?</summary><p>לא. כל המקומות נפתחים רק דרך השאלון. מי שנמצאת מתאימה מקבלת מאיתנו הודעה ולינק לתשלום, ורק התשלום שומר את המקום.</p></details>
+      <details><summary>מתי משלמים?</summary><p>רק אחרי שאישרנו שאת מתאימה. אז תקבלי מאיתנו הודעה עם לינק לתשלום.</p></details>
+      <details><summary>איפה הפגישה?</summary><p>בזום.</p></details>
+      <details><summary>איך בוחרים מועד?</summary><p>אחרי התשלום נשלח לך קישור ליומן, ושם תבחרי את הזמן שנוח לך.</p></details>
+      <details><summary>מה הבונוס?</summary><p>3 הראשונות שעוברות את השאלון, מתקבלות ומשלימות תשלום מקבלות כרטיס כניסה מתנה לאירוע פתיחת שנה 2027 – Creators Gala: מותגי ביוטי מובילים, הרצאות של אנשי המפתח המובילים בתעשיית השיווק ופאנל יוצרות תוכן.</p></details>
+    </div>
+    <div class="cta-row"><a class="btn" href="#price">אני רוצה להגיש מועמדות</a></div>
+  </div>
+</section>
+</main>
+
+<footer>הטבת יום הולדת 30 · 7 מקומות בלבד · בכפוף להתאמה</footer>
+
+<script>
+/* ===== הגדרות: לעדכן כאן ===== */
+const CONFIG = {
+  WHATSAPP_NUMBER: "972559789198", // מספר הוואטסאפ שאליו יישלחו השאלונים, בפורמט בינלאומי בלי + ובלי 0 בהתחלה
+  SPOTS_LEFT: 7,                   // לעדכן ידנית כשמקומות נתפסים
+  // גיבוי לטופס הגוגל "שאלון פיצוח אסטרטגי 1:1 עם תמר" (עובד כשהעמוד מתארח באתר שלך, למשל Vercel)
+  GOOGLE_FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLScZjbzNYFe3-BDhzFQyh_4uVEcJmAdkLWf2SldXzEEvXqqkUQ/formResponse",
+  // "במה אתן עובדות היום?" בטופס הגוגל היא שאלת בחירה עם "Option 1" בלבד, אז התשובה נשלחת בתוך שדה "הבעיה המרכזית".
+  // אם תשני בטופס את השאלה ל"תשובה קצרה", שני כאן ל־true והתשובה תיכנס לעמודה משלה.
+  WORK_IS_SHORT_ANSWER: false,
+  GOOGLE_FORM_FIELDS: { name:"entry.860567838", phone:"entry.1166974658", ig:"entry.1222605306", exp:"entry.839337160", problem:"entry.928112484", work:"entry.56245958", want:"entry.2066420366" }
+};
+/* ============================== */
+
+document.getElementById("spots").textContent = CONFIG.SPOTS_LEFT;
+
+const f = document.getElementById("f");
+const val = id => (document.getElementById(id).value || "").trim();
+const picked = name => [...f.querySelectorAll(`input[name="${name}"]:checked`)].map(i => i.value);
+
+function validPhone(p){ const d = p.replace(/\D/g,""); return /^(05\d{8}|9725\d{8})$/.test(d); }
+
+function check(){
+  let firstBad = null;
+  f.querySelectorAll(".field[data-req]").forEach(fd => {
+    let ok = true;
+    if (fd.dataset.radio) ok = picked(fd.dataset.radio).length > 0;
+    else if (fd.dataset.check) ok = document.getElementById(fd.dataset.check).checked;
+    else {
+      const el = fd.querySelector("input,textarea");
+      ok = el.value.trim().length > 0;
+      if (ok && fd.hasAttribute("data-phone")) ok = validPhone(el.value);
+    }
+    fd.classList.toggle("bad", !ok);
+    if (!ok && !firstBad) firstBad = fd;
+  });
+  return firstBad;
+}
+
+function buildText(){
+  const lines = [
+    "היי תמר! מילאתי את שאלון הפיצוח האסטרטגי 1:1 (הטבת 30)",
+    "",
+    "שם מלא: " + val("name"),
+    "טלפון: " + val("phone"),
+    "אינסטגרם: " + val("ig"),
+    "רמת ניסיון בניהול סושיאל: " + picked("exp").join(", "),
+    "הבעיה המרכזית: " + val("problem"),
+    "במה אני עובדת היום: " + val("work"),
+    "כמה אני רוצה (1-5): " + picked("want").join(", ")
+  ];
+  return lines.filter(l => l !== null).join("\n");
+}
+
+/* שולח עותק של התשובות לטופס הגוגל ברקע. אם הדפדפן חוסם (למשל בתצוגה ב־Claude), פשוט ממשיכים לוואטסאפ */
+function sendToGoogleForm(){
+  try{
+    if(!CONFIG.GOOGLE_FORM_URL) return;
+    const F=CONFIG.GOOGLE_FORM_FIELDS, body=new URLSearchParams();
+    body.append(F.name,val("name")); body.append(F.phone,val("phone")); body.append(F.ig,val("ig"));
+    body.append(F.exp,picked("exp")[0]||""); if(CONFIG.WORK_IS_SHORT_ANSWER){ body.append(F.problem,val("problem")); body.append(F.work,val("work")); }
+    else { body.append(F.problem,val("problem")+"\n\nבמה אני עובדת היום: "+val("work")); body.append(F.work,"Option 1"); }
+    body.append(F.want,picked("want")[0]||"");
+    fetch(CONFIG.GOOGLE_FORM_URL,{method:"POST",mode:"no-cors",body,keepalive:true}).catch(()=>{});
+  }catch(_){}
+}
+f.addEventListener("submit", e => {
+  e.preventDefault();
+  const bad = check();
+  if (bad){ bad.scrollIntoView({behavior:"smooth", block:"center"}); const el = bad.querySelector("input,textarea"); if (el) el.focus({preventScroll:true}); return; }
+  sendToGoogleForm();
+  const text = buildText();
+  document.getElementById("summary").textContent = text;
+  document.getElementById("waBtn").href = "https://wa.me/" + CONFIG.WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
+  document.getElementById("waNum").textContent = "אם הכפתור לא נפתח, אפשר להעתיק את התשובות ולשלוח לוואטסאפ: +" + CONFIG.WHATSAPP_NUMBER;
+  document.getElementById("formbox").style.display = "none";
+  const done = document.getElementById("done");
+  done.classList.add("show");
+  done.scrollIntoView({behavior:"smooth", block:"start"});
+  pageBurst();
+});
+
+f.addEventListener("input", e => { const fd = e.target.closest(".field.bad"); if (fd) fd.classList.remove("bad"); });
+f.addEventListener("change", e => { const fd = e.target.closest(".field.bad"); if (fd) fd.classList.remove("bad"); });
+
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  const b = document.getElementById("copyBtn");
+  try { await navigator.clipboard.writeText(buildText()); b.textContent = "הועתק"; }
+  catch(_) { b.textContent = "סמני את הטקסט והעתיקי ידנית"; }
+  setTimeout(() => b.textContent = "העתקת התשובות", 2500);
+});
+
+/* spots dots */
+(function(){const d=document.getElementById("dots");for(let i=0;i<7;i++){const e=document.createElement("span");if(i>=CONFIG.SPOTS_LEFT)e.className="taken";e.style.animationDelay=(i*.15)+"s";d.appendChild(e);}})();
+
+/* confetti */
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cv=document.getElementById("confetti"), cx=cv.getContext("2d");
+const COLORS=["#FFF5F7","#FFB8CB","#F5A3BA","#C2325E","#E9C3CD","#FFD6E0"];
+let parts=[];
+function size(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+function mk(burst,x,y){const w=cv.clientWidth;return{x:burst?x:Math.random()*w,y:burst?y:-20-Math.random()*cv.clientHeight,vx:burst?(Math.random()-.5)*9:(Math.random()-.5)*.6,vy:burst?-Math.random()*9-3:1+Math.random()*1.4,r:4+Math.random()*5,c:COLORS[Math.random()*COLORS.length|0],a:Math.random()*6.28,va:(Math.random()-.5)*.2,s:Math.random()<.5,life:burst?140:Infinity}}
+function draw(){cx.clearRect(0,0,cv.clientWidth,cv.clientHeight);const h=cv.clientHeight,w=cv.clientWidth;
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=p.va;if(p.life!==Infinity){p.vy+=.25;p.vx*=.99;p.life--;}
+    else if(p.y>h+10){p.y=-10;p.x=Math.random()*w;}
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;
+    if(p.s){cx.fillRect(-p.r/2,-p.r,p.r,p.r*2)}else{cx.beginPath();cx.arc(0,0,p.r/1.6,0,6.28);cx.fill()}cx.restore();});
+  parts=parts.filter(p=>p.life>0);requestAnimationFrame(draw);}
+size();addEventListener("resize",size);
+if(!reduce){for(let i=0;i<45;i++){const p=mk(false);p.y=Math.random()*cv.clientHeight;parts.push(p);}draw();}
+function burst(){if(reduce)return;const w=cv.clientWidth;for(let i=0;i<120;i++)parts.push(mk(true,w/2,cv.clientHeight*.45));}
+setTimeout(burst,300);
+
+/* celebration on submit */
+function pageBurst(){if(reduce)return;const c=document.createElement("canvas");c.setAttribute("aria-hidden","true");c.style.cssText="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50";document.body.appendChild(c);
+ const g=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;let ps=[];for(let i=0;i<160;i++)ps.push({x:innerWidth/2,y:innerHeight*.6,vx:(Math.random()-.5)*14,vy:-Math.random()*14-4,r:4+Math.random()*6,c:COLORS[Math.random()*COLORS.length|0].replace("#FFF5F7","#7A1232"),a:Math.random()*6,va:(Math.random()-.5)*.3});
+ let t=0;(function f(){g.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.3;p.a+=p.va;g.save();g.translate(p.x,p.y);g.rotate(p.a);g.fillStyle=p.c;g.fillRect(-p.r/2,-p.r,p.r,p.r*2);g.restore();});if(++t<160)requestAnimationFrame(f);else c.remove();})();}
+
+/* questionnaire = its own page view (#apply) */
+const apply=document.getElementById("apply");
+function showForm(on){
+  document.body.classList.toggle("form-mode",on);apply.hidden=!on;
+  window.scrollTo(0,0);
+  if(on) setTimeout(()=>{const n=document.getElementById("name");if(n)n.focus({preventScroll:true});},300);
+}
+document.querySelectorAll(".open-form").forEach(btn=>btn.addEventListener("click",e=>{e.preventDefault();if(location.hash!=="#apply")location.hash="apply";else showForm(true);}));
+document.getElementById("backLink").addEventListener("click",e=>{e.preventDefault();showForm(false);if(location.hash==="#apply"){history.replaceState(null,"",location.pathname+location.search);}document.getElementById("price").scrollIntoView();});
+addEventListener("hashchange",()=>{if(location.hash==="#apply")showForm(true);else if(document.body.classList.contains("form-mode")){showForm(false);}});
+if(location.hash==="#apply")showForm(true);
+</script>
+</body>
+</html>
