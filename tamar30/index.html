@@ -400,6 +400,8 @@ body.form-mode #apply{border-top:0;padding-top:0;min-height:100vh}
   details{padding:14px 16px}
   footer{padding:24px 16px 36px}
 }
+/* static, smooth background after the opening burst */
+.bl,.halo,.smile-halo{animation:none !important}
 </style>
 </head>
 <body>
@@ -738,10 +740,10 @@ function draw(){cx.clearRect(0,0,cv.clientWidth,cv.clientHeight);const h=cv.clie
     else if(p.y>h+10){p.y=-10;p.x=Math.random()*w;}
     cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;
     if(p.s){cx.fillRect(-p.r/2,-p.r,p.r,p.r*2)}else{cx.beginPath();cx.arc(0,0,p.r/1.6,0,6.28);cx.fill()}cx.restore();});
-  parts=parts.filter(p=>p.life>0);requestAnimationFrame(draw);}
+  parts=parts.filter(p=>p.life>0);if(parts.length)requestAnimationFrame(draw);else{running=false;cx.clearRect(0,0,cv.clientWidth,cv.clientHeight);}}
+let running=false;
 size();addEventListener("resize",size);
-if(!reduce){for(let i=0;i<45;i++){const p=mk(false);p.y=Math.random()*cv.clientHeight;parts.push(p);}draw();}
-function burst(){if(reduce)return;const w=cv.clientWidth;for(let i=0;i<120;i++)parts.push(mk(true,w/2,cv.clientHeight*.45));}
+function burst(){if(reduce)return;const w=cv.clientWidth;for(let i=0;i<140;i++)parts.push(mk(true,w/2,cv.clientHeight*.4));if(!running){running=true;draw();}}
 setTimeout(burst,300);
 
 /* celebration on submit */
